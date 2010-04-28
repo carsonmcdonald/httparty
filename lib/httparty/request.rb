@@ -1,4 +1,5 @@
 require 'uri'
+require 'zlib'
 
 module HTTParty
   class Request #:nodoc:
@@ -152,6 +153,12 @@ module HTTParty
             last_response
           end
         else
+          lr_body = nil
+          if last_response['content-encoding'] == 'gzip' || last_response['content-encoding'] == 'deflate'
+            lr_body = Zlib::GzipReader.new(StringIO.new(last_response.body)).read
+          else
+            lr_body = last_response.body
+          end
           Response.new(parse_response(last_response.body), last_response.body, last_response.code, last_response.message, last_response.to_hash)
         end
       end
