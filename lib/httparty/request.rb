@@ -159,7 +159,7 @@ module HTTParty
           else
             lr_body = last_response.body
           end
-          Response.new(parse_response(last_response.body), last_response.body, last_response.code, last_response.message, last_response.to_hash)
+          Response.new(parse_response(lr_body), lr_body, last_response.code, last_response.message, last_response.to_hash)
         end
       end
 
